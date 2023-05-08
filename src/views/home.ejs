@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4b6f922cb1.js" crossorigin="anonymous"></script>
+    <!-- <script src="../funciones.js"></script> -->
+    <title>Calculadora Web</title>
+</head>
+<body class="body">
+    <h1>Calculadora Web</h1>
+    <br>
+    <br>
+    <main >
+        
+        <form action="" method="post" enctype="multipart/form-data" class="calcContainer">
+            <label for="display"></label>
+            <input type="text" name="display" id="display" class="display" value="0" readonly >
+            <input type="number" name="resultado" id="resultado" value=0 hidden>  <!-- Resultado de la operacion -->
+            <input type="text" name="resultadoIntermedio" id="resultadoIntermedio" value='' hidden>  <!-- Resultado de la operacion -->
+            <input type="text" name="operacion" id="operacion" value='' hidden>   <!-- Simbolo de la operacion -->
+            <input type="text" name="operacionAux" id="operacionAux" value='' hidden>   <!-- Simbolo de la operacion Auxiliar -->
+            <input type="text" name="hasNum1" id="hasNum1" value='' hidden>
+            <input type="text" name="hasNum2" id="hasNum2" value='' hidden>
+            <input type="number" name="num1" id="num1" value=0 hidden>    <!-- Primer Operando -->
+            <input type="number" name="num2" id="num2" value=0 hidden>    <!-- Segundo Operando -->
+
+            <div class="calcRowContainer">
+                <button type="reset" class="calcDoubleButton" onclick="resetOperationsButtons()">AC</button>
+                <button type="button" class="calcNormalButton" onclick="calcularRaiz()" id="raiz" value="√">√</button>
+                <button type="button" class="calcNormalButton" onclick="procesarOperacion(this.value)" id="division" value="/">/</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="seven" value="7">7</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="eight" value="8">8</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="nine" value="9">9</button>
+                <button type="button" class="calcNormalButton" onclick="procesarOperacion(this.value)" id="cross" value="*">*</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="four" value="4">4</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="five" value="5">5</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="six" value="6">6</button>
+                <button type="button" class="calcNormalButton" onclick="procesarOperacion(this.value)" id="minus" value="-">-</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="one" value="1">1</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="two" value="2">2</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="three" value="3">3</button>
+                <button type="button" class="calcNormalButton" onclick="procesarOperacion(this.value)" value="+" id="sum">+</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcDoubleButton" onclick="procesarBoton(this.value)" id="zero" value="0">0</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(this.value)" id="coma" value=".">.</button>
+                <button type="button" class="calcNormalButton" onclick="calcularResultado()" value=" = ">=</button>
+            </div>
+            
+        </form>
+    </main>
+    
+    <footer class="footer_container">
+        <div class="footer_container_elem1">
+            <p>©Ernesto Caballero Vieyra | 2023</p> 
+        </div>
+        <div class="footer_container_elem2">
+            <p>
+                <i class="fa-brands fa-github"></i> - <a href="https://github.com/elmono007" target="_blank"> elmono007</a>
+            </p>
+        </div>
+    </footer>
+    <script type="text/javascript">
+
+        let displayNum=0;            //Numero de la pantalla
+        let displayConNumero="si";   //Para saber si el display tiene un numero
+        let puntoDecimal="no";       //Para Saber si ya se usó el punto o se presiono
+        let num1=0;                  //Numero que espera para poder realizar la operacion con el segundo valor
+        let operacion="";            //Operacion a realizar entre los dos operandos
+        let resultado="";            //Va a contener el primer valor ingresado, operacion a realizar y segundo valor ingresado
+                                     //que luego convertiremos en numeros
+        
+        function procesarBoton(num) {
+
+            if(num!=".") {
+
+                //Verificar si la pantall tiene el 0 u otro numero
+                if (displayNum == "0" || displayConNumero == "si") {
+                    document.getElementById("display").value = num;
+                    displayNum = num;
+
+                } else if (num != ".") {      //Volvemos a pregunar por el .
+                    document.getElementById("display").value += num;
+                    displayNum += num;
+                }
+            }
+
+            if (num == "." && puntoDecimal=="no" && displayNum == "0") { //El punto se presiono por primera vez con 0 en la pantalla
+                document.getElementById("display").value = "0.";
+                displayNum = num;
+                puntoDecimal = "si";
+
+            } else if (num == "." && puntoDecimal == "no") {        //Se presiona . por primera vez se agrega al num de la pantalla
+                document.getElementById("display").value += num;
+                displayNum += num;
+                puntoDecimal="si";
+
+            } else if (num == "." && puntoDecimal == "si") {      //Si el . ya fue presionado anteriormente
+                //No hacemos nada.  
+            }
+
+            //Finalizamos la funcion reiniciando en "no" display con numero
+            displayConNumero = "no";
+        }
+
+
+        function procesarOperacion(op) {
+            //Chequeamos si es la primera vez q se presente una operacion o un signo
+            
+            if (operacion == "") {
+
+                //Tomamos el numero de la pantalla
+                num1 = document.getElementById("display").value;
+                document.getElementById("display").value += op;
+                operacion = op;
+                displayConNumero = "si";
+                displayNum = "";        //Reiniciamos pantalla
+                puntoDecimal = "no";    //Reiniciamos filtro punto
+
+            }
+
+        }
+        
+        function calcularResultado () {
+              
+                //Verificamos si hay operacion pendiente para evitar a cada rato que presionen el boton igual
+                if (operacion != "") {
+                    //Si tenemos operacion pendiente, entonces armamos en resultado, la cadena con el 
+                    //1er operando + la operacion + el valor de la pantalla.
+                    resultado = num1 + operacion + displayNum;
+
+                    //Esto se va a resolver como una funcion matematica y se muestra en pantalla
+                    document.getElementById("display").value = eval(resultado);
+                    displayNum = eval(resultado);
+
+                    //Luego reiniciamos las demas variables
+                    displayConNumero = "si";
+                    operacion = "";
+                    puntoDecimal = "no";
+
+                }
+            }
+
+
+        function resetOperationsButtons() {
+
+            displayNum=0;   //Numero de la pantalla
+            displayConNumero="si";   //Para saber si el display tiene un numero
+            puntoDecimal="no";       //Para Saber si ya se usó el punto o se presiono
+            num1=0;             //Numero que espera para poder realizar la operacion con el segundo valor
+            operacion="";       //Operacion a realizar entre los dos operandos
+            resultado="";
+
+        }
+
+        function calcularRaiz() {
+
+        if (operacion == "") {
+            
+            document.getElementById("display").value = Math.sqrt(displayNum);
+            displayConNumero = "si";
+            operacion = "";
+            puntoDecimal = "no";
+
+        }
+        }
+    </script>
+</body>
+</html>

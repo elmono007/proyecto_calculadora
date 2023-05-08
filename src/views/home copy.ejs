@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4b6f922cb1.js" crossorigin="anonymous"></script>
+    <!-- <script src="../funciones.js"></script> -->
+    <title>Calculadora Web</title>
+</head>
+<body class="body">
+    <h1>Calculadora Web</h1>
+    <br>
+    <br>
+    <main >
+        
+        <form action="" method="post" enctype="multipart/form-data" class="calcContainer">
+            <label for="display"></label>
+            <input type="number" name="display" id="display" class="display" readonly >
+            <input type="number" name="resultado" id="resultado" value=0 hidden>  <!-- Resultado de la operacion -->
+            <input type="text" name="resultadoIntermedio" id="resultadoIntermedio" value='' hidden>  <!-- Resultado de la operacion -->
+            <input type="text" name="operacion" id="operacion" value='' hidden>   <!-- Simbolo de la operacion -->
+            <input type="text" name="operacionAux" id="operacionAux" value='' hidden>   <!-- Simbolo de la operacion Auxiliar -->
+            <input type="text" name="hasNum1" id="hasNum1" value='' hidden>
+            <input type="text" name="hasNum2" id="hasNum2" value='' hidden>
+            <input type="number" name="num1" id="num1" value=0 hidden>    <!-- Primer Operando -->
+            <input type="number" name="num2" id="num2" value=0 hidden>    <!-- Segundo Operando -->
+            <input type="text" name="ultimoBoton" id="ultimoBoton" value='' hidden>    <!-- Segundo Operando -->
+
+            <div class="calcRowContainer">
+                <button type="reset" class="calcDoubleButton" onclick="resetOperationsButtons()">AC</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('negative')" id="negative" value="-1">-/+</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('/')" id="division" value="/">/</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(7)" id="seven" value=7>7</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(8)" id="eight" value=8>8</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(9)" id="nine" value=9>9</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('*')" id="cross" value="*">*</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(4)" id="four" value=4>4</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(5)" id="five" value=5>5</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(6)" id="six" value=6>6</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('-')" id="minus" value="-">-</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(1)" id="one" value=1>1</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(2)" id="two" value=2>2</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton(3)" id="three" value=3>3</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('+')" id="sum" value=+>+</button>
+            </div>
+            <div class="calcRowContainer">
+                <button type="button" class="calcDoubleButton" onclick="procesarBoton(0)" id="zero" value=0>0</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('.')" id="coma" value=".">.</button>
+                <button type="button" class="calcNormalButton" onclick="procesarBoton('=')" value="=">=</button>
+            </div>
+            
+        </form>
+    </main>
+    
+    <footer class="footer_container">
+        <div class="footer_container_elem1">
+            <p>©Ernesto Caballero Vieyra | 2023</p> 
+        </div>
+        <div class="footer_container_elem2">
+            <p>
+                <i class="fa-brands fa-github"></i> - <a href="https://github.com/elmono007" target="_blank"> elmono007</a>
+            </p>
+        </div>
+    </footer>
+    <script>
+
+        function resetOperationsButtons() {
+            document.getElementById("division").style.backgroundColor = '';
+            document.getElementById("sum").style.backgroundColor = '';
+            document.getElementById("minus").style.backgroundColor = '';
+            document.getElementById("cross").style.backgroundColor = '';
+
+        }
+
+        function procesarBoton(num) {
+
+            switch (num) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 0:  
+                case '.':  
+                    
+                    
+                    if ( document.getElementById("hasNum1").value != '' && document.getElementById("operacion").value != '' ) {
+                        document.getElementById("display").value = ''
+                        document.getElementById("operacion").value = '';
+                    }
+                    document.getElementById("display").value = (document.getElementById("display").value) + num;
+                    resetOperationsButtons();
+                    break;
+
+                case '=':
+                    
+                    if (document.getElementById("hasNum1").value != " " && document.getElementById("display").value != " ")  {
+                        //Procedemos a realizar el resultado
+                        console.log("puta");
+                        console.log(document.getElementById("num1").value);
+                        console.log(document.getElementById("display").value);
+                        console.log(document.getElementById("operacionAux").value);
+                        let operacion = document.getElementById("operacionAux").value;
+
+                        switch (operacion) {
+                            case '+': 
+                                document.getElementById("display").value = Number(document.getElementById("num1").value) + Number(document.getElementById("display").value); 
+                                
+                                //Pasamos el resultado a Num 1
+                                document.getElementById("num1").value = 0;
+                                document.getElementById("hasNum1").value = '';
+                                resetOperationsButtons(); 
+                                break;
+
+                            case '-':
+                                
+                                document.getElementById("display").value = Number(document.getElementById("num1").value) - Number(document.getElementById("display").value); 
+                                
+                                //Pasamos el resultado a Num 1
+                                document.getElementById("num1").value = 0;
+                                document.getElementById("hasNum1").value = '';
+                                resetOperationsButtons();
+                        }
+                    }
+                    break;
+
+                case '+':
+
+                    if (document.getElementById("resultadoIntermedio").value != '') {
+                        document.getElementById("Num1").value = document.getElementById("resultado").value;
+                        document.getElementById("hasNum1").value = 'x';
+                        document.getElementById("Num2").value = 0;
+                        document.getElementById("hasNum2").value = 'x';
+                    }    
+                
+                    if (document.getElementById("hasNum1").value == '') {
+
+                        document.getElementById("sum").style.backgroundColor = 'orange';
+                        document.getElementById("operacion").value = '+'
+                        document.getElementById("operacionAux").value = '+'
+                        document.getElementById("num1").value = document.getElementById("display").value;
+                        document.getElementById("hasNum1").value = 'x'
+                        console.log("mela");
+
+                        
+                    } else if (document.getElementById("hasNum2").value == '') {
+                        document.getElementById("sum").style.backgroundColor = 'orange';
+                        document.getElementById("operacion").value = '+';
+                        document.getElementById("operacionAux").value = document.getElementById("operacion").value;
+                        document.getElementById("num2").value = document.getElementById("display").value;
+                        document.getElementById("hasNum2").value = 'x'
+                        console.log("meto");
+                        console.log(document.getElementById("num1").value);
+                        console.log(document.getElementById("num2").value);
+                        let num1 = Number(document.getElementById("num1").value);
+                        let num2 = Number(document.getElementById("num2").value);
+                        document.getElementById("display").value = '';
+
+                        calcularResultado()
+                        
+                    } else {
+                        // Implica resultado de la primera.
+                        console.log("entro en rsultado");
+                        let num1 = Number(document.getElementById("num1").value);
+                        let num2 = Number(document.getElementById("num2").value);
+                        
+                        calcularResultado(num1, num2, '+')
+                    }
+                        
+                    // console.log("hjuju");    
+                    // console.log(document.getElementById("num1").value);
+                    // console.log(document.getElementById("num2").value);
+                    // console.log(document.getElementById("operacion").value);
+        
+                    
+                    break;
+
+                case '-':
+                if (document.getElementById("resultadoIntermedio").value != '') {
+                        document.getElementById("Num1").value = document.getElementById("resultado").value;
+                        document.getElementById("hasNum1").value = 'x';
+                        document.getElementById("Num2").value = 0;
+                        document.getElementById("hasNum2").value = 'x';
+                    }    
+                
+                    if (document.getElementById("hasNum1").value == '') {
+
+                        document.getElementById("minus").style.backgroundColor = 'orange';
+                        document.getElementById("operacion").value = '-'
+                        document.getElementById("operacionAux").value = '-'
+                        document.getElementById("num1").value = document.getElementById("display").value;
+                        document.getElementById("hasNum1").value = 'x'
+                        console.log("melamenos");
+
+                        
+                    } else if (document.getElementById("hasNum2").value == '') {
+                        document.getElementById("minus").style.backgroundColor = 'orange';
+                        document.getElementById("operacion").value = '-';
+                        document.getElementById("operacionAux").value = document.getElementById("operacion").value;
+                        document.getElementById("num2").value = document.getElementById("display").value;
+                        document.getElementById("hasNum2").value = 'x'
+                        console.log("metomenos");
+                        console.log(document.getElementById("num1").value);
+                        console.log(document.getElementById("num2").value);
+                        let num1 = Number(document.getElementById("num1").value);
+                        let num2 = Number(document.getElementById("num2").value);
+                        document.getElementById("display").value = '';
+
+                        calcularResultado()
+                        
+                    } else {
+                        // Implica resultado de la primera.
+                        console.log("entro en rsultadomenos");
+                        let num1 = Number(document.getElementById("num1").value);
+                        let num2 = Number(document.getElementById("num2").value);
+                        
+                        calcularResultado(num1, num2, '-')
+                    }
+                    
+                    break;
+                case '*':
+                case '/':
+
+                default: /*'+', '-', '/', '*':*/
+                    
+
+            }
+
+        }
+
+        function calcularResultadoIntermedio(num1, num2, signo) {
+
+            
+        }
+        function calcularResultado() {
+            
+            let signo = document.getElementById("operacionAux").value;
+            let num1 = Number(document.getElementById("num1").value);
+            let num2 = Number(document.getElementById("num2").value);
+
+            switch (signo) {
+
+                case '+':
+                
+                    document.getElementById("resultado").value = num1 + num2;
+                    document.getElementById("display").value = num1 + num2;
+                    document.getElementById("resultadoIntermedio").value = 'x';
+                    console.log(document.getElementById("resultado").value);
+
+                    
+                case '-':
+                    document.getElementById("resultado").value = num1 - num2;
+                    document.getElementById("display").value = num1 - num2;
+                    document.getElementById("resultadoIntermedio").value = 'x';
+                    console.log(document.getElementById("resultado").value);
+
+                case '*':
+                case '/':
+            }
+        }
+
+        function chequearSigno() {
+
+                if ( document.getElementById("sum").style.backgroundColor == 'orange' ) {
+                        return '+'; 
+
+                    } else if ( document.getElementById("minus").style.backgroundColor == 'orange' ) {
+                        return '-';
+                    
+                    } else if (document.getElementById("division").style.backgroundColor == 'orange' ) {
+                        return '/';
+
+                    } else if ( document.getElementById("cross").style.backgroundColor == 'orange') {
+                        return '*';
+
+                    } else {}
+
+                    return 
+        }
+
+    </script>
+</body>
+</html>
